@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Membership Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-users"></i>
+                <div>
+                    <h2>Membership</h2>
+                    <p>Management System</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="manajemen-user.html" class="nav-item">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Manajemen User</span>
+                </a>
+                <a href="umkm.html" class="nav-item">
+                    <i class="fas fa-store"></i>
+                    <span>UMKM</span>
+                </a>
+                <a href="pendidikan.html" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Pendidikan</span>
+                </a>
+                <a href="kesehatan.html" class="nav-item">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Kesehatan</span>
+                </a>
+                <a href="hukum.html" class="nav-item">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>Bantuan Hukum</span>
+                </a>
+                <a href="sosial.html" class="nav-item">
+                    <i class="fas fa-hands-helping"></i>
+                    <span>Sosial</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="greeting">
+                    <h1>Selamat Datang Admin</h1>
+                    <p class="breadcrumb">Home / Dashboard</p>
+                </div>
+                <div class="top-bar-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div class="user-profile">
+                        <div class="user-avatar">AL</div>
+                        <div class="user-info">
+                            <span id="userEmailShort">Admin</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Statistics Cards -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalAnggota">0</h3>
+                        <p>Total Anggota Aktif</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="pelakuUmkm">0</h3>
+                        <p>Pelaku UMKM</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon yellow">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="pengajuanMenunggu">0</h3>
+                        <p>Pengajuan Menunggu</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalSaldo">Rp 0</h3>
+                        <p>Total Saldo E-Money</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Aktivitas Terbaru -->
+            <section class="activity-section">
+                <div class="section-header">
+                    <h2>Aktivitas Terbaru</h2>
+                    <a href="#" class="view-all">
+                        <i class="fas fa-list"></i> Lihat Semua
+                    </a>
+                </div>
+                <div class="table-container">
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>WAKTU</th>
+                                <th>USER</th>
+                                <th>AKTIVITAS</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityTableBody">
+                            <tr>
+                                <td colspan="4" class="no-data">Belum ada aktivitas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Bottom Section -->
+            <section class="bottom-section">
+                <!-- <div class="program-aktif">
+                    <h3>Program Aktif</h3>
+                    <div class="program-list" id="programList">
+                        <p class="no-data">Tidak ada program aktif</p>
+                    </div>
+                </div> -->
+                
+                <div class="transaksi-hari-ini">
+                    <h3>Transaksi Hari Ini</h3>
+                    <div class="transaksi-list" id="transaksiList">
+                        <p class="no-data">Belum ada transaksi</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Axios CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
