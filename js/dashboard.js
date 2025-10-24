@@ -15,7 +15,6 @@ axios.get('http://192.168.18.245:8080/api/v1/admin/dashboard-stats', {
   console.error('Gagal memuat statistik dashboard:', err);
 });
 
-
 // ====== 2️⃣ Fetch Aktivitas Terbaru ======
 axios.get('http://192.168.18.245:8080/api/v1/admin/submissions', {
   headers: { Authorization: `Bearer ${token}` }
@@ -33,7 +32,7 @@ axios.get('http://192.168.18.245:8080/api/v1/admin/submissions', {
   const sorted = submissions.sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
 
   // 🔹 Tampilkan max 10 aktivitas terakhir (bisa ubah sesuai kebutuhan)
-  const latest = sorted.slice(0, 10);
+  const latest = sorted.slice(0, 20);
 
   activityBody.innerHTML = latest.map(sub => `
     <tr>

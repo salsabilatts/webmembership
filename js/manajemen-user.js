@@ -51,11 +51,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           kabupaten,
           kecamatan,
           kelurahan,
+          card_uid,
         } = user;
 
         return `
           <tr>
             <td>${ID || "-"}</td>
+            <td>${card_uid || "-"}</td>
             <td>${full_name || "-"}</td>
             <td>${email || "-"}</td>
             <td>${phone || "-"}</td>
@@ -117,6 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     modalBody.innerHTML = `
       <p><strong>ID User:</strong> ${user.ID}</p>
+      <p><strong>Card ID:</strong> ${user.card_uid || "-"}</p>
       <p><strong>Nama Lengkap:</strong> ${user.full_name}</p>
       <p><strong>Email:</strong> ${user.email}</p>
       <p><strong>Telepon:</strong> ${user.phone || "-"}</p>
@@ -134,6 +137,68 @@ document.addEventListener("DOMContentLoaded", async () => {
   closeModalBtns.forEach((btn) => {
     if (btn) btn.addEventListener("click", () => (modal.style.display = "none"));
   });
+
+   // === EXPORT KE EXCEL ===
+const exportBtn = document.getElementById("exportExcelBtn");
+if (exportBtn) {
+  exportBtn.addEventListener("click", async () => {
+    try {
+      if (!allUsers || allUsers.length === 0) {
+        alert("Tidak ada data untuk diexport!");
+        return;
+      }
+
+      // Ambil filter aktif (jika user lagi ngefilter)
+      const activeFilter = document.querySelector(".filter-btn.active");
+      const currentRole = activeFilter?.dataset.role || "all";
+
+      // Filter sesuai role yang sedang aktif
+      let exportData =
+        currentRole === "all"
+          ? allUsers
+          : allUsers.filter(
+              (u) => u.role?.toLowerCase() === currentRole.toLowerCase()
+            );
+
+      if (exportData.length === 0) {
+        alert("Tidak ada data untuk role tersebut!");
+        return;
+      }
+
+      // Format data ke bentuk array objek sederhana
+      const formattedData = exportData.map((user, index) => ({
+        No: index + 1,
+        "ID User": user.ID || "-",
+        "Card ID": user.card_uid || "-",
+        "Nama Lengkap": user.full_name || "-",
+        "Email": user.email || "-",
+        "Telepon": user.phone || "-",
+        "Role": user.role || "-",
+        "Provinsi": user.provinsi || "-",
+        "Kabupaten": user.kabupaten || "-",
+        "Kecamatan": user.kecamatan || "-",
+        "Kelurahan": user.kelurahan || "-",
+      }));
+
+      // Buat workbook Excel
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(formattedData);
+      XLSX.utils.book_append_sheet(wb, ws, "Manajemen User");
+
+      // Nama file otomatis
+      const namaFile =
+        currentRole === "all"
+          ? "manajemen_user_semua.xlsx"
+          : `manajemen_user_${currentRole}.xlsx`;
+
+      XLSX.writeFile(wb, namaFile);
+      alert("✅ Data berhasil diexport ke Excel!");
+    } catch (err) {
+      console.error("Gagal export Excel:", err);
+      alert("Terjadi kesalahan saat export Excel.");
+    }
+  });
+}
 
   // === LOGOUT ===
   const logoutBtn = document.getElementById("logoutBtn");

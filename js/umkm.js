@@ -45,9 +45,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         const namaUsaha = FormData?.["Nama Usaha"] || "-";
         const jenisUsaha = FormData?.["Jenis Usaha"] || "-";
         const kebutuhan = FormData?.["Uraian Kebutuhan Bantuan"] || "-";
-        const dokumen = FormData?.document_path
-          ? `<a href="http://192.168.18.245:8080/${FormData.document_path}" target="_blank" class="doc-link">Lihat</a>`
-          : "-";
+        let dokumen = "-";
+        if (FormData?.document_path) {
+        const filename = FormData.document_path.split("/").pop();
+        const fileUrl = `http://192.168.18.245:8080/api/v1/admin/files/${encodeURIComponent(filename)}`;
+        dokumen = `
+            <a href="${fileUrl}" class="doc-link"
+            onclick="event.preventDefault(); downloadFileWithAuth('${fileUrl}', '${filename}')">
+            Unduh
+            </a>`;
+        }
 
         const statusLabel = Status
           ? Status.charAt(0).toUpperCase() + Status.slice(1)
@@ -144,6 +151,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!item) return;
 
     const { User, FormData, Status, CreatedAt } = item;
+    let dokumenHTML = "-";
+    if (FormData?.document_path) {
+    const filename = FormData.document_path.split("/").pop();
+    const fileUrl = `http://192.168.18.245:8080/api/v1/admin/files/${encodeURIComponent(filename)}`;
+    dokumenHTML = `
+      <a href="${fileUrl}" target="_blank"
+        onclick="event.preventDefault(); downloadFileWithAuth('${fileUrl}', '${filename}')">
+        Unduh Dokumen
+      </a>`;
+    }
     modalBody.innerHTML = `
       <p><strong>Tanggal Pengajuan:</strong> ${new Date(CreatedAt).toLocaleString("id-ID")}</p>
       <p><strong>Nama Pemohon:</strong> ${User?.full_name || "-"}</p>
@@ -153,11 +170,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       <p><strong>Alamat Usaha:</strong> ${FormData?.["Alamat Usaha"] || "-"}</p>
       <p><strong>Kebutuhan Bantuan:</strong> ${FormData?.["Uraian Kebutuhan Bantuan"] || "-"}</p>
       <p><strong>Status:</strong> ${Status || "-"}</p>
-      <p><strong>Dokumen:</strong> ${
-        FormData?.document_path
-          ? `<a href="http://192.168.18.245:8080/${FormData.document_path}" target="_blank">Lihat Dokumen</a>`
-          : "-"
-      }</p>
+      <p><strong>Dokumen:</strong> ${dokumenHTML}</p>
     `;
    modal.style.display = "flex";
     const validateBtn = document.getElementById("validateBtn");
@@ -176,6 +189,40 @@ document.addEventListener("DOMContentLoaded", async () => {
       rejectBtn.onclick = () =>
         updateStatus(id, "ditolak", "Mohon maaf, pengajuan Anda ditolak.");
   }
+
+   // === DOWNLOAD FILE DENGAN TOKEN ===
+  async function downloadFileWithAuth(url, filename) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) throw new Error("Gagal mengunduh file");
+
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      // kalau file PDF → buka di tab baru
+      if (filename.toLowerCase().endsWith(".pdf")) {
+        window.open(blobUrl, "_blank");
+      } else {
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Gagal mengunduh file:", error);
+      alert("Gagal mengunduh file pendukung!");
+    }
+  }
+
+  window.downloadFileWithAuth = downloadFileWithAuth;
 
   // === UPDATE STATUS ===
   async function updateStatus(id, status, notes) {
@@ -206,6 +253,67 @@ document.addEventListener("DOMContentLoaded", async () => {
   closeModalBtns.forEach((btn) => {
     if (btn) btn.addEventListener("click", () => (modal.style.display = "none"));
   });
+
+    // === EXPORT KE EXCEL ===
+  const exportBtn = document.getElementById("exportExcelBtn");
+  if (exportBtn) {
+    exportBtn.addEventListener("click", async () => {
+      try {
+        if (!allData || allData.length === 0) {
+          alert("Tidak ada data untuk diexport!");
+          return;
+        }
+
+        // Ambil status filter aktif (kalau kamu mau export sesuai filter)
+        const activeFilter = document.querySelector(".filter-btn.active");
+        const currentStatus = activeFilter?.dataset.status || "all";
+
+        // Filter ulang sesuai status yang dipilih
+        let exportData =
+          currentStatus === "all"
+            ? allData
+            : allData.filter(
+                (d) => normalizeStatus(d.Status) === currentStatus
+              );
+
+        if (exportData.length === 0) {
+          alert("Tidak ada data untuk status tersebut!");
+          return;
+        }
+
+        // Format data jadi array objek sederhana
+        const formattedData = exportData.map((item, index) => ({
+          No: index + 1,
+          "Tanggal Pengajuan": new Date(item.CreatedAt).toLocaleString("id-ID"),
+          "Nama Pemohon": item.User?.full_name || "-",
+          "Email": item.User?.email || "-",
+          "Nama Pemohon": item.FormData?.["Nama Usaha"] || "-",
+          "Jenis Usaha": item.FormData?.["Jenis Usaha"] || "-",
+          "Alamat Usaha": item.FormData?.["Alamat Usaha"] || "-",
+          "Kebutuhan Bantuan": item.FormData?.["Uraian Kebutuhan Bantuan"] || "-",
+          "Status": item.Status || "-",
+        }));
+
+        // Buat dan export file Excel
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(formattedData);
+        XLSX.utils.book_append_sheet(wb, ws, "Bantuan Hukum");
+
+        const namaFile =
+          currentStatus === "all"
+            ? "umkm_semua.xlsx"
+            : `umkm_${currentStatus}.xlsx`;
+
+        XLSX.writeFile(wb, namaFile);
+        alert("✅ Data berhasil diexport ke Excel!");
+
+      } catch (err) {
+        console.error("Gagal export Excel:", err);
+        alert("Terjadi kesalahan saat export Excel.");
+      }
+    });
+  }
+
 
   // === LOGOUT ===
   const logoutBtn = document.getElementById("logoutBtn");

@@ -6,6 +6,8 @@
     <title>Pendidikan - Membership Management System</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
     <div class="container">
@@ -129,7 +131,6 @@
                 </div>
             </section>
 
-            <!-- Sosial Submissions Table -->
             <section class="activity-section">
                 <div class="section-header">
                     <h2>Daftar Pengajuan Pendidikan</h2>
@@ -139,6 +140,11 @@
                         <button class="filter-btn" data-status="validasi berkas">Validasi Berkas</button>
                         <button class="filter-btn" data-status="approved">Disetujui</button>
                         <button class="filter-btn" data-status="rejected">Ditolak</button>
+                    </div>
+                    <div class="export-section">
+                        <button id="exportExcelBtn" class="btn-export">
+                            <i class="fas fa-file-excel"></i> Export ke Excel
+                        </button>
                     </div>
                 </div>
                 
@@ -191,6 +197,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="js/pendidikan.js"></script>
 </body>
 </html>

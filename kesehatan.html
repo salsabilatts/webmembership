@@ -129,7 +129,6 @@
                 </div>
             </section>
 
-            <!-- Sosial Submissions Table -->
             <section class="activity-section">
                 <div class="section-header">
                     <h2>Daftar Pengajuan Kesehatan</h2>
@@ -139,6 +138,11 @@
                         <button class="filter-btn" data-status="validasi berkas">Validasi Berkas</button>
                         <button class="filter-btn" data-status="approved">Disetujui</button>
                         <button class="filter-btn" data-status="rejected">Ditolak</button>
+                    </div>
+                        <div class="export-section">
+                            <button id="exportExcelBtn" class="btn-export">
+                                <i class="fas fa-file-excel"></i> Export ke Excel
+                            </button>
                     </div>
                 </div>
                 
@@ -179,7 +183,6 @@
                 </button>
             </div>
             <div class="modal-body" id="modalBody">
-                <!-- Content will be loaded dynamically -->
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="closeModalBtn">Tutup</button>
@@ -191,6 +194,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="js/kesehatan.js"></script>
 </body>
 </html>

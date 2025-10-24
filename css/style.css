@@ -674,42 +674,53 @@ body {
 .btn-danger:hover {
     background: #dc2626;
 }
+/* ===== EXPORT BUTTON ===== */
+.export-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
 
-/* Responsive */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 70px;
-    }
-    
-    .sidebar-header div,
-    .nav-item span {
-        display: none;
-    }
-    
-    .main-content {
-        margin-left: 70px;
-    }
-    
-    .stats-section {
-        grid-template-columns: 1fr;
-    }
-    
-    .top-bar {
-        flex-direction: column;
-        gap: 16px;
-        align-items: flex-start;
-    }
-    
-    .filter-buttons {
-        flex-wrap: wrap;
-    }
+.btn-export {
+  background-color: #1b5e20; /* hijau tua elegan */
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.25s ease;
+}
 
-    .filter-dropdown {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  background: white;
+.btn-export i {
+  font-size: 16px;
+}
+
+.btn-export:hover {
+  background-color: #2e7d32;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.btn-export:active {
+  transform: scale(0.98);
+}
+
+/* Responsif export */
+@media (max-width: 576px) {
+  .export-section {
+    justify-content: center;
+  }
+
+  .btn-export {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .pagination {
@@ -750,4 +761,41 @@ body {
     .btn {
         width: 100%;
     }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .sidebar-header div,
+    .nav-item span {
+        display: none;
+    }
+    
+    .main-content {
+        margin-left: 70px;
+    }
+    
+    .stats-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .top-bar {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+    
+    .filter-buttons {
+        flex-wrap: wrap;
+    }
+
+    .filter-dropdown {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background: white;
+}
 }

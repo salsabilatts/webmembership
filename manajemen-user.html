@@ -128,6 +128,11 @@
                         <button class="filter-btn" data-role="admin">Admin</button>
                         <button class="filter-btn" data-role="user">User</button>
                     </div>
+                    <div class="export-section">
+                        <button id="exportExcelBtn" class="btn-export">
+                            <i class="fas fa-file-excel"></i> Export ke Excel
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="table-container">
@@ -135,6 +140,7 @@
                         <thead>
                             <tr>
                                 <th>NO</th>
+                                <th>CARD ID</th>
                                 <th>NAMA LENGKAP</th>
                                 <th>EMAIL</th>
                                 <th>TELEPON</th>
@@ -177,6 +183,7 @@
 
     <!-- Add Axios CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script> 
     <script src="js/manajemen-user.js"></script>
 </body>
 </html>
