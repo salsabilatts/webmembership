@@ -1,3 +1,4 @@
+const BASE_URL = "https://api.teknisiai.cloud";
 document.getElementById('loginForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
@@ -5,7 +6,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
   const password = document.getElementById('password').value;
 
   try {
-    const res = await axios.post('http://192.168.18.245:8080/api/v1/auth/login', {
+    const res = await axios.post(`${BASE_URL}/api/v1/auth/login`, {
       email,
       password
     });

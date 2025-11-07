@@ -1,3 +1,5 @@
+const BASE_URL = "https://api.teknisiai.cloud";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const tableBody = document.getElementById("sosialTableBody");
   const totalSosial = document.getElementById("totalSosial");
@@ -16,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let allData = [];
 
   try {
-    const response = await axios.get("http://192.168.18.245:8080/api/v1/admin/submissions", {
+    const response = await axios.get(`${BASE_URL}/api/v1/admin/submissions`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -49,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         let dokumen = "-";
         if (FormData?.document_path) {
         const filename = FormData.document_path.split("/").pop();
-        const fileUrl = `http://192.168.18.245:8080/api/v1/admin/files/${encodeURIComponent(filename)}`;
+        const fileUrl = `${BASE_URL}/api/v1/admin/files/${encodeURIComponent(filename)}`;
         dokumen = `
             <a href="${fileUrl}" class="doc-link"
             onclick="event.preventDefault(); downloadFileWithAuth('${fileUrl}', '${filename}')">
@@ -156,7 +158,7 @@ function showDetail(id) {
   let dokumenHTML = "-";
   if (FormData?.document_path) {
     const filename = FormData.document_path.split("/").pop();
-    const fileUrl = `http://192.168.18.245:8080/api/v1/admin/files/${encodeURIComponent(filename)}`;
+    const fileUrl = `${BASE_URL}/api/v1/admin/files/${encodeURIComponent(filename)}`;
     dokumenHTML = `
       <a href="${fileUrl}" target="_blank"
         onclick="event.preventDefault(); downloadFileWithAuth('${fileUrl}', '${filename}')">
@@ -240,7 +242,7 @@ function showDetail(id) {
 
     try {
       await axios.post(
-        `http://192.168.18.245:8080/api/v1/admin/submissions/${id}/status`,
+        `${BASE_URL}/api/v1/admin/submissions/${id}/status`,
         { status, notes },
         { headers: { Authorization: `Bearer ${token}` } }
       );

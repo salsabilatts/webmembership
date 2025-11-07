@@ -1,3 +1,5 @@
+const BASE_URL = "https://api.teknisiai.cloud";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const tableBody = document.getElementById("pendidikanTableBody");
   const totalPendidikan = document.getElementById("totalPendidikan");
@@ -16,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let allData = [];
 
   try {
-    const response = await axios.get("http://192.168.18.245:8080/api/v1/admin/submissions", {
+    const response = await axios.get( `${BASE_URL}/api/v1/admin/submissions`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = response.data || [];
@@ -48,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         let dokumen = "-";
         if (FormData?.document_path) {
         const filename = FormData.document_path.split("/").pop();
-        const fileUrl = `http://192.168.18.245:8080/api/v1/admin/files/${encodeURIComponent(filename)}`;
+        const fileUrl = `${BASE_URL}/api/v1/admin/files/${encodeURIComponent(filename)}`;
         dokumen = `
             <a href="${fileUrl}" class="doc-link"
             onclick="event.preventDefault(); downloadFileWithAuth('${fileUrl}', '${filename}')">
@@ -155,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let dokumenHTML = "-";
     if (FormData?.document_path) {
     const filename = FormData.document_path.split("/").pop();
-    const fileUrl = `http://192.168.18.245:8080/api/v1/admin/files/${encodeURIComponent(filename)}`;
+    const fileUrl = `${BASE_URL}/api/v1/admin/files/${encodeURIComponent(filename)}`;
     dokumenHTML = `
       <a href="${fileUrl}" target="_blank"
         onclick="event.preventDefault(); downloadFileWithAuth('${fileUrl}', '${filename}')">
@@ -237,7 +239,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       await axios.post(
-        `http://192.168.18.245:8080/api/v1/admin/submissions/${id}/status`,
+        `${BASE_URL}/api/v1/admin/submissions/${id}/status`,
         { status, notes },
         { headers: { Authorization: `Bearer ${token}` } }
       );

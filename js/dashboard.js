@@ -1,7 +1,9 @@
+const BASE_URL = "https://api.teknisiai.cloud";
+
 const token = localStorage.getItem('token');
 
 // ====== 1️⃣ Fetch Dashboard Stats ======
-axios.get('http://192.168.18.245:8080/api/v1/admin/dashboard-stats', {
+axios.get(`${BASE_URL}/api/v1/admin/dashboard-stats`, {
   headers: { Authorization: `Bearer ${token}` }
 })
 .then(res => {
@@ -16,7 +18,7 @@ axios.get('http://192.168.18.245:8080/api/v1/admin/dashboard-stats', {
 });
 
 // ====== 2️⃣ Fetch Aktivitas Terbaru ======
-axios.get('http://192.168.18.245:8080/api/v1/admin/submissions', {
+axios.get(`${BASE_URL}/api/v1/admin/submissions`, {
   headers: { Authorization: `Bearer ${token}` }
 })
 .then(res => {
@@ -53,7 +55,7 @@ axios.get('http://192.168.18.245:8080/api/v1/admin/submissions', {
 
 
 // ====== 3️⃣ Fetch Transaksi Hari Ini ======
-axios.get('http://192.168.18.245:8080/api/v1/admin/submissions', {
+axios.get(`${BASE_URL}/api/v1/admin/submissions`, {
   headers: { Authorization: `Bearer ${token}` }
 })
 .then(res => {

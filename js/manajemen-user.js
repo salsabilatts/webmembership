@@ -1,4 +1,5 @@
 // js/manajemen-user.js
+const BASE_URL = "https://api.teknisiai.cloud";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const tableBody = document.getElementById("userTableBody");
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // Ambil data user dari API
-    const response = await axios.get("http://192.168.18.245:8080/api/v1/admin/users", {
+    const response = await axios.get(`${BASE_URL}/api/v1/admin/users`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
