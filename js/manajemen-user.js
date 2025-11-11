@@ -33,6 +33,43 @@ document.addEventListener("DOMContentLoaded", async () => {
     tableBody.innerHTML = `<tr><td colspan="10" class="no-data">Gagal memuat data dari API.</td></tr>`;
   }
 
+  // === FITUR SEARCH ===
+const searchInput = document.getElementById("searchInput");
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    const keyword = searchInput.value.toLowerCase().trim();
+
+    // cek filter role yg aktif
+    const activeFilter = document.querySelector(".filter-btn.active");
+    const currentRole = activeFilter?.dataset.role || "all";
+
+    let filtered = allUsers;
+
+    // filter by role
+    if (currentRole !== "all") {
+      filtered = filtered.filter(
+        (u) => u.role?.toLowerCase() === currentRole.toLowerCase()
+      );
+    }
+
+    // filter by search keywords
+    filtered = filtered.filter((u) => {
+      return (
+        u.full_name?.toLowerCase().includes(keyword) ||
+        u.email?.toLowerCase().includes(keyword) ||
+        u.card_uid?.toLowerCase().includes(keyword) ||
+        u.phone?.toLowerCase().includes(keyword) ||
+        u.provinsi?.toLowerCase().includes(keyword) ||
+        u.kabupaten?.toLowerCase().includes(keyword) ||
+        u.kecamatan?.toLowerCase().includes(keyword) ||
+        u.kelurahan?.toLowerCase().includes(keyword)
+      );
+    });
+
+    renderTable(filtered);
+  });
+}
+
   // === FUNGSI RENDER TABEL ===
   function renderTable(users) {
     if (!users.length) {
